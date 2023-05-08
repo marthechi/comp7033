@@ -1,0 +1,146 @@
+<!-- search.html -->
+{% extends 'base.html' %}
+{% block content %}
+   <div class="container">
+    <div class="row mt-3">
+        <h3>Search for Restaurants</h3>
+    </div>
+    <div style="border: 1px solid grey; border-radius: 12px; padding: 10px;">
+      <div class="row mb-2">
+        <div class="col-6 col-md-3 ">
+          Location
+        </div>
+        <div class="col-6 col-md-3 ">
+          Price
+        </div>
+        <div class="col-6 col-md-2 ">
+          Type of Food
+        </div>
+        <div class="col-6 col-md-2 ">
+          Available Seats
+        </div>
+      </div>
+      <form method="GET" action="{{ url_for('findRestaurant') }}">
+        <div class="row mt-2">
+          <div class="col-md-3 col-6">
+            <input type="text" class="form-control" name="location" id="location">
+          </div>
+          <div class="col-md-3 col-6">
+            <input type="number" class="form-control" name="price" id="price">
+          </div>
+          <div class="col-md-2 col-6">
+            <input type="text" class="form-control" name="food_type" id="food_type">
+          </div>
+          <div class="col-md-2 col-6">
+            <input type="number" class="form-control" name="seats" id="seats">
+          </div>
+          <div class="col-md-2 col-6">
+            <button type="submit" class="btn btn-primary">Search</button>
+          </div>
+        </div>
+      </form>
+    </div>
+   </div>
+  <hr>
+  <div class="container">
+    {% with messages = get_flashed_messages() %}  
+        {% if messages %}  
+            {% for message in messages %}  
+            <div class="alert alert-success text-center">
+                <strong>{{message}}</strong> 
+            </div>  
+            {% endfor %}  
+        {% endif %}  
+    {% endwith %} 
+    {% if message %}
+        <div class="alert alert-success text-center">
+            <strong>{{message}}</strong> 
+        </div>
+    {% endif %}
+    <div class="col-12 col-md-8 mx-auto">
+        {% if restaurants %}
+          <h2>All Restaurants:</h2>
+          <table class="table table-hover table-striped">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Price</th>
+                <th>Type of Food</th>
+                <th>Available Seats</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for restaurant in restaurants %}
+                <tr>
+                  <td><a href="#">{{ restaurant.name }}</a></td>
+                  <td>{{ restaurant.location }}</td>
+                  <td>&#8358;{{ restaurant.price }}</td>
+                  <td>{{ restaurant.food_type }}</td>
+                  <td>
+                    {{ restaurant.available_seats }} 
+                    <button class="btn btn-sm btn-primary btns" data-value="{{  restaurant.name }}" data-id="{{ restaurant._id }}" data-toggle="modal" data-target="#bookTableModal">Book Table</button>
+                    <!-- <form method="POST" action="{{ url_for('bookTable') }}">
+                      <input type="hidden" name="restaurant_id" value="{{ restaurant.id }}">
+                      <input type="number" class="form-control" name="tables" id="tables" placeholder="Number of Tables">
+                    </form> -->
+                  </td>
+                </tr>
+                  <!-- Book Table Modal -->
+                  <div class="modal fade" id="bookTableModal{{ restaurant.id }}" tabindex="-1" role="dialog" aria-labelledby="bookTableModalLabel{{ restaurant.id }}" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="bookTableModalLabel{{ restaurant.id }}">Book a Table at <span id="modal-item-name"></span></h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <form action="{{ url_for('bookTable') }}" method="POST">
+                          <div class="modal-body">
+                            <div class="form-group">
+                              <label for="number_of_tables">Number of Tables</label>
+                              <input type="number" name="number_of_tables" class="form-control" id="number_of_tables" required>
+                            </div>
+                            <div class="form-group">
+                              <label for="number_of_tables">Date</label>
+                              <input type="date" name="date" class="form-control" id="date" required>
+                            </div>
+                            <div class="form-group">
+                              <label for="number_of_tables">Time</label>
+                              <input type="text" name="time" placeholder="Time"
+                              class="form-control" id="time" required>
+                            </div>
+                            <input type="hidden" id="restaurant_id" name="restaurant_id"  style="display: none;">
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Reserve</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+              {% endfor %}
+            </tbody>
+          </table>
+
+        {% else %}
+        <h4>No restaurant found</h4>
+        {% endif %}
+    </div>
+  </div>
+  <script>
+    const buttons = document.querySelectorAll('.btns');
+    buttons.forEach(function(button) {
+      button.addEventListener('click', function(event) {
+        // Get the ID of the button that was clicked
+        const name = event.target.dataset.value
+        const id = event.target.dataset.id
+        document.getElementById('modal-item-name').innerHTML = name
+        document.getElementById('restaurant_id').value = id
+      });
+    });
+   
+  </script>
+{% endblock %}

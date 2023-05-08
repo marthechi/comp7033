@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div >
+  <div class="container">
+      <header class="section-header mt-5">
+        <h3>Restaurant</h3>
+      </header>
+      <div class="row " >
+        {% with messages = get_flashed_messages() %}  
+            {% if messages %}  
+                {% for message in messages %}  
+                <div class="alert alert-success text-center">
+                    <strong>{{message}}</strong> 
+                </div>  
+                {% endfor %}  
+            {% endif %}  
+        {% endwith %} 
+          <div class="col-12 col-md-9 mx-auto">
+            <table class="table table-responsive table-striped">
+              <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Open Hours</th>
+                    <th>Close Hours</th>
+                    <th>Cuisines</th>
+                    <th>Available seats</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for history in result %}
+                  <tr>
+                      <td>{{history.name}}</td>
+                      <td>{{ history.address }}</td>
+                      <!-- <td>{{ history.dishImage}}</td> -->
+                      <td>{{ history.openHours}}</td>
+                      <td>{{ history.closeHours}}</td>
+                      <td>{{ history.cuisines}}</td>
+                      <td>{{ history.available_seats}}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+          </table>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row" style="margin-top: 80px;">
+        <h4>Add restaurant menu</h4>
+        {% with messages = get_flashed_messages() %}  
+            {% if messages %}  
+                {% for message in messages %}  
+                <div class="alert alert-success text-center">
+                    <strong>{{message}}</strong> 
+                </div>  
+                {% endfor %}  
+            {% endif %}  
+        {% endwith %} 
+        <div class="col-md-6 col-12 mx-auto">
+            <form method="post" class="mt-3" action="{{ url_for('addMenu') }}"
+            enctype="multipart/form-data">
+                <div class="form-group" style="display: none;">
+                    <label for="email">Name</label>
+                    <input type="text" name="restaurant_id" value="{{restaurant_id}}" placeholder="Menu name"
+                    class="form-control" required>
+                </div> 
+                <div class="form-group">
+                    <label for="email">Name</label>
+                    <input type="text" name="name" placeholder="Menu name"
+                    class="form-control" required>
+                </div> 
+                <div class="form-group">
+                    <label for="email">Description</label>
+                    <textarea name="description" class="form-control" placeholder="Menu Description"></textarea>
+                </div> 
+                <div class="form-group">
+                    <label for="email">Price</label>
+                    <input type="number" name="price" placeholder="Menu price"
+                    class="form-control" required>
+                </div> 
+                <div class="form-group">
+                    <label for="email">Dish type</label>
+                    <select class="form-control" name="featured">
+                        <option value="false">Regular</option>
+                        <option value="true">Special</option>
+                    </select>
+                </div> 
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Image</label> <br>
+                    <input type=file name='image' onchange="showPreview(event)"> 
+                    <div class="preview text-center">
+                        <img id="file-ip-1-preview">
+                    </div>
+                </div>
+                <div class="form-group mb-2">
+                    <div class="row">
+                        <div class="col-6">
+                            <a href="{{url_for('addStaff')}}" class="btn btn-md btn-secondary w-100"> Skip </a>
+                        </div>
+                        <div class="col-6">
+                            <button type="submit" class="btn btn-md btn-primary w-100"> Next </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function showPreview(event){
+        if(event.target.files.length > 0){
+            var src = URL.createObjectURL(event.target.files[0]);
+            var preview = document.getElementById("file-ip-1-preview");
+            preview.src = src;
+            preview.style.height= '100px'
+            preview.style.width= '100px'
+            // preview.style.display = "block";
+        }
+    }
+</script>
+
+{% endblock %}

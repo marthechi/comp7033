@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}
+    Restaurant-create
+{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row mt-0">
+        <nav arial-label ="breadcrumb">
+            <ol class="breadcrumb" style="background-color: white">
+                <li class="breadcrumb-item">
+                    <a href="{{ url_for('dashboard') }}"> Dashboard </a>
+                </li>
+                 <li class="breadcrumb-item active">
+                     Create restaurant
+                </li>
+            </ol>
+        </nav>
+        <div class="col-md-6 col-12 mx-auto">
+            <form method="post" class="mt-3" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="email">Restaurant Name:</label>
+                    <input type="text" name="name" placeholder="Restaurant name"
+                    class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Address:</label>
+                    <textarea name="address" class="form-control" placeholder="Address"
+                    required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="email">Opening hours:</label>
+                    <input type="time" name="openHours" placeholder="8am"
+                    class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Closing hours:</label>
+                    <input type="time" name="closeHours" placeholder="7pm"
+                    class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Cuisine type:</label>
+                    <input type="text" name="cuisines" placeholder="Chinese"
+                    class="form-control" required>
+                    <!-- <select  name="cuisines" class="form-control" required>
+                        <option value="mexican">Mexican</option>
+                        <option value="fast food">Fast food</option>
+                        <option value="indian">Indian</option>
+                        <option value="chinese">Chinese</option>
+                        <option value="local">Local</option>
+                        <option value="italian">Italian</option>
+                    </select> -->
+                </div>
+                <div class="form-group mb-2">
+                    <button type="submit" class="btn btn-md btn-primary w-100"> Next </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

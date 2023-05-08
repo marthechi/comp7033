@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<header class="jumbotron">
+    <div class="container">
+    <div class="row row-header">
+        <div class="col-12 col-sm-6 mt-3">
+            <h1>Welcome to customers restaurants</h1>
+            <p>We take inspiration from the World's best cuisines, and create a unique fusion experience. Our lipsmacking createed restaurants list will tickle your culinary senses!</p>
+        </div>
+        <div class="col col-sm align-self-center" style="text-align: center;">
+            <img src="img/logo.png" class="img-fluid">
+        </div>
+        <div class="col-12 col-sm align-self-center" style="text-align: center;">
+            <a id="buttonReservation" href="{{ url_for('findRestaurant') }}" type="button" class="btn btn-warning btn-md btn-block" role="button">Find restaurant</a>
+        </div>
+    </div>
+</header>
+<div class="container">
+    {% with messages = get_flashed_messages() %}  
+        {% if messages %}  
+            {% for message in messages %}  
+            <div class="alert alert-success text-center">
+                <strong>{{message}}</strong> 
+            </div>  
+            {% endfor %}  
+        {% endif %}  
+    {% endwith %} 
+    {% if message %}
+        <div class="alert alert-success text-center">
+            <strong>{{message}}</strong> 
+        </div>
+    {% endif %}
+    <div class="row mt-2">
+        {% for item in menu %}
+        <div class="col-12 col-md-5 m-1">
+            <div class="card card-dish">
+                <img src="{{item.image}}" alt="{{item.name}}" width="100%"  class="card-img-top"/>
+                <div class="card-img-overlay">
+                    <h4 class="card-title">{{item.name}}</h4>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-6">
+                            <p>&#8358;{{item.price}}</p>
+                        </div>
+                        <div class="col-6 text-right">
+                            <button class="btn btns btn-sm btn-primary"
+                            data-name="{{  item.name }}" 
+                            data-id="{{ item._id }}" 
+                            data-image="{{item.image}}" 
+                            data-price="{{item.price}}" 
+                            data-description="{{ item.description}}" 
+                            data-toggle="modal" data-target="#bookTableModal"
+                            >Place Order</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+         <!-- Order Table Modal -->
+         <div class="modal fade" id="bookTableModal{{ item.id }}" tabindex="-1" role="dialog" aria-labelledby="bookTableModalLabel{{ item.id }}" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="bookTableModalLabel{{ item.id }}">Place your order for <span id="modal-item-name"></span></h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                      <form action="{{ url_for('order') }}" method="POST">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <img src="../static/images/elaicheesecake.png" class="dish-img" alt="">
+                                </div>
+                                <div class="col-12 col-md-6 align-self-center">
+                                    <div class="form-group">
+                                        <label for="number_of_tables">Quantity</label>
+                                        <input type="number" name="quantity" class="form-control" id="quantity" required>
+                                        <input type="hidden" id="dish_id" name="dishId"  style="display: none;">
+                                        <input type="hidden" id="description" name="dishDescription"  style="display: none;">
+                                        <input type="hidden" id="name" name="dishName"  style="display: none;">
+                                        <input type="hidden" id="dishPrice" name="dishPrice"  style="display: none;">
+                                        <input type="hidden" id="dishImage" name="dishImage"  style="display: none;">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Order</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+     </div>
+
+</div>
+
+<script>
+    const buttons = document.querySelectorAll('.btns');
+    buttons.forEach(function(button) {
+      button.addEventListener('click', function(event) {
+        // Get the ID of the button that was clicked
+        const name = event.target.dataset.name
+        const id = event.target.dataset.id
+        const description = event.target.dataset.description
+        const image = event.target.dataset.image
+        const price = event.target.dataset.price
+        document.getElementById('modal-item-name').innerHTML = name
+        // document.querySelector('.dish-image').src = image
+        document.getElementsByClassName("dish-image").src = image
+        document.getElementById('dish_id').value = id
+        document.getElementById('name').value = name
+        document.getElementById('description').value = description
+        document.getElementById('dishImage').value = image
+        document.getElementById('dishPrice').value = price
+      });
+    });
+</script>
+ 
+{% endblock %}

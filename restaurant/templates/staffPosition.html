@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row" style="margin-top: 80px;">
+        <h4>Add restaurant positions:</h4>
+        {% with messages = get_flashed_messages() %}  
+            {% if messages %}  
+                {% for message in messages %}  
+                <div class="alert alert-success text-center">
+                    <strong>{{message}}</strong> 
+                </div>  
+                {% endfor %}  
+            {% endif %}  
+        {% endwith %} 
+        <div class="col-md-6 col-12 mx-auto">
+            <form method="post" class="mt-3" 
+            enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="email">Qualifications/Experience:</label>
+                    <textarea  name="qualification" placeholder="Position description, qualification and Experience"
+                    class="form-control" required></textarea>
+                </div>  
+                <div class="form-group">
+                    <label for="email">Position:</label>
+                    <input type="text" name="position" placeholder="waitStaff"
+                    class="form-control"/>
+                    <!-- <select class="form-control" name="position">
+                        <option value="Waitstaff">Waitstaff</option>
+                        <option value="Bartenders">Bartenders</option>
+                        <option value="Hosts/hostesses">Hosts/hostesses</option>
+                        <option value="Bussers">Bussers</option>
+                        <option value="Dishwashers">Dishwashers</option>
+                        <option value="Chefs and cooks">Chefs and cooks</option>
+                        <option value="Sommeliers">Sommeliers</option>
+                        <option value="Delivery drivers">Delivery drivers</option>
+                    </select> -->
+                </div> 
+                <div class="form-group mb-2">
+                    <button type="submit" class="btn btn-md btn-primary w-100"> Submit </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function showPreview(event){
+        if(event.target.files.length > 0){
+            var src = URL.createObjectURL(event.target.files[0]);
+            var preview = document.getElementById("file-ip-1-preview");
+            preview.src = src;
+            preview.style.height= '100px'
+            preview.style.width= '100px'
+            // preview.style.display = "block";
+        }
+    }
+</script>
+
+{% endblock %}
